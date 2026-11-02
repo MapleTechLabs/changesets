@@ -1,0 +1,25 @@
+name: CI
+
+on:
+    push:
+        branches: [main]
+    pull_request:
+    workflow_dispatch:
+
+permissions:
+    contents: read
+
+jobs:
+    check:
+        name: Types, tests and build
+        runs-on: ubuntu-latest
+        timeout-minutes: 15
+        steps:
+            - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v6
+            - uses: jdx/mise-action@c2a87611a18de5b3828c5652fe268e992400cb5c # v4.3.0
+            - run: bun install --frozen-lockfile
+            - run: bun run typecheck
+            - run: bun run test
+            - run: bun run build
+            - name: Built bin runs on Node
+              run: node dist/bin.mjs --version

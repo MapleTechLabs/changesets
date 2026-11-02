@@ -1,0 +1,67 @@
+{
+	"name": "@maple-dev/changesets",
+	"version": "0.1.0",
+	"description": "A dependency-free, Effect-based drop-in for the @changesets/cli add, version and status commands",
+	"keywords": [
+		"changesets",
+		"changelog",
+		"effect",
+		"monorepo",
+		"release",
+		"versioning"
+	],
+	"homepage": "https://github.com/MapleTechLabs/changesets#readme",
+	"bugs": {
+		"url": "https://github.com/MapleTechLabs/changesets/issues"
+	},
+	"license": "MIT",
+	"author": "Makisuo, Inc.",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/MapleTechLabs/changesets.git"
+	},
+	"bin": {
+		"changeset": "./dist/bin.mjs"
+	},
+	"files": [
+		"dist",
+		"README.md"
+	],
+	"type": "module",
+	"sideEffects": false,
+	"exports": {
+		".": {
+			"types": "./dist/index.d.mts",
+			"import": "./dist/index.mjs",
+			"default": "./dist/index.mjs"
+		},
+		"./package.json": "./package.json"
+	},
+	"publishConfig": {
+		"access": "public"
+	},
+	"engines": {
+		"node": ">=22"
+	},
+	"scripts": {
+		"build": "tsdown",
+		"typecheck": "tsc --noEmit",
+		"test": "vitest run",
+		"prepublishOnly": "bun run typecheck && bun run test && bun run build",
+		"changeset": "bun src/bin.ts",
+		"version-packages": "bun src/bin.ts version",
+		"release": "bun scripts/publish.ts",
+		"record-reference": "bun scripts/record-reference.ts"
+	},
+	"dependencies": {
+		"@effect/platform-node": "^4.1.0",
+		"effect": "^4.1.0"
+	},
+	"devDependencies": {
+		"@types/node": "^24.19.2",
+		"tsdown": "^0.23.0",
+		"typescript": "^7.0.2",
+		"vitest": "^5.0.5"
+	},
+	"packageManager": "bun@1.4.4"
+}

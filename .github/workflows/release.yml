@@ -1,0 +1,36 @@
+name: Release
+
+on:
+    push:
+        branches: [main]
+    workflow_dispatch:
+
+concurrency: ${{ github.workflow }}-${{ github.ref }}
+
+permissions:
+    contents: write
+    pull-requests: write
+    id-token: write
+
+jobs:
+    release:
+        name: Version or publish
+        # A manual run on another branch must never publish.
+        if: github.ref == 'refs/heads/main'
+        runs-on: ubuntu-latest
+        timeout-minutes: 15
+        steps:
+            - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v6
+            - uses: jdx/mise-action@c2a87611a18de5b3828c5652fe268e992400cb5c # v4.3.0
+            - run: bun install --frozen-lockfile
+            # With changesets pending, opens or updates the "Version Packages" PR; once it is
+            # merged, publishes. npm authenticates through trusted publishing (OIDC).
+            - uses: changesets/action@ae32849d5ba541f9ae29e40e22a623bc13562f51 # v2.1.2
+              with:
+                  version-script: bun run version-packages
+                  publish-script: bun run release
+                  commit-message: "chore: version packages"
+                  pr-title: "chore: version packages"
+              env:
+                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+                  NPM_CONFIG_PROVENANCE: "true"
