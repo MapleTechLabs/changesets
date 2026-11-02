@@ -1,6 +1,6 @@
 {
 	"name": "@maple-dev/changesets",
-	"version": "0.1.0",
+	"version": "0.1.1",
 	"description": "A dependency-free, Effect-based drop-in for the @changesets/cli add, version and status commands",
 	"keywords": [
 		"changesets",
