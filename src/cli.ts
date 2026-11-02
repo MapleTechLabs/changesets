@@ -10,8 +10,8 @@ import { shouldSkipPackage, skipOptions } from "./config.ts"
 import { CommandExit, UnsupportedFeatureError } from "./errors.ts"
 import { lessThan, type BumpType } from "./semver.ts"
 import type { ComprehensiveRelease, Package, Release } from "./types.ts"
-
-const version = "0.1.0"
+// Inlined at build time, so `--version` always matches the published version.
+import { version } from "../package.json" with { type: "json" }
 
 const listFlag = (name: string, description: string) =>
 	Flag.String(name).pipe(
