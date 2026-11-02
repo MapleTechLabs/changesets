@@ -6,6 +6,7 @@
 		"lib": ["ES2023"],
 		"types": ["node"],
 		"moduleResolution": "bundler",
+		"resolveJsonModule": true,
 		"allowImportingTsExtensions": true,
 		"verbatimModuleSyntax": true,
 		"erasableSyntaxOnly": true,
